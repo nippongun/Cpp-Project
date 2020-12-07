@@ -13,6 +13,7 @@ std::istream& operator>>(std::istream& is, Question& q) {
 	return is;
 }
 
+// The delimiter for each value is \n
 std::ostream& operator<<(std::ostream& os, const Question& q) {
 	os << q.question;
 	os << std::endl;
@@ -28,7 +29,7 @@ std::ostream& operator<<(std::ostream& os, const Question& q) {
 	os << std::endl;
 	return os;
 }
-
+// Seperate function for the user interaction
 void Question::input() {
 	std::cout << "Enter the question:" << std::endl;
 	std::getline(std::cin, question);

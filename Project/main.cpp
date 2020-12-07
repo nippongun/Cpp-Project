@@ -1,6 +1,6 @@
 /*
 * C++ project "Quiz" by Simon Bauer, 2020, for the Metropolia UAS course "Object oriented programming in IoT"
-* 
+* This project uses C++ 17 for compiling. 
 *
 */
 #include "Question.h"
@@ -13,22 +13,18 @@
 #define FILENAME "file.txt"
 
 void initialize(const std::string &filename);
-void deserializer(std::vector<Question> vector,const std::string &filename);
-void print_report(const std::vector<Question> vector);
 int main() {
 	std::string filename = FILENAME;
 	std::ifstream in(filename);
 
-	Quiz quiz;
+	std::cout << "Hello. Please enter a file name. If the file does not exist, it will be created. The file loaction is the same as the program.\nThe program does not save the added question automatically. Make sure to enter 2 before closing." << std::endl;
+	std::getline(std::cin, filename);
 
-	// Deserialize the Vector using istream_iterators 
-	//std::vector<Question> v((std::istream_iterator<Question>(in)), std::istream_iterator<Question>());
-	//std::vector<Question> quiz_list;
-	//std::copy(std::istream_iterator<Question>(in), std::istream_iterator<Question>(), std::back_inserter(quiz_list));
-	
+	Quiz quiz;
 	// MAIN MENU 
 	int i = 0;
 	while (i != 9) {
+		std::cout << "1: Initialize a file (deletes exisiting file), 2: Save to file, 3: Load from file, 4: Add a question, 5: Play game, 6: Print report, 7: Quit" << std::endl;
 		std::cout << "Enter a number:" << std::endl;
 		std::cin >> i;
 
@@ -41,8 +37,12 @@ int main() {
 		}
 		if (i == 3) {
 			// Read questions from file
-			quiz.deserialize(filename);
-			std::cout << quiz.getSize() << " questions were loaded." << std::endl;
+			if (quiz.deserialize(filename) >= 0) {
+				std::cout << quiz.getSize() << " questions were loaded." << std::endl;
+			}
+			else { 
+				std::cout << "Error occured during file interaction." << std::endl;
+			}
 		}
 		if (i == 4) {
 			// Add a new question
@@ -50,6 +50,8 @@ int main() {
 		}
 		if (i == 5) {
 			// Take quiz
+			int score = quiz.play_game(5);
+			std::cout << "Your score:" << score << "out of 5" << std::endl;
 		}
 		if (i == 6) {
 			quiz.print_report();
@@ -62,25 +64,12 @@ int main() {
 
 	return 1;
 }
-
+/// <summary>
+/// Initialize creates a file if no file exists and deletes the content of exisiting files.
+/// </summary>
+/// <param name="filename"></param>
 void initialize(const std::string &filename) {
 	std::ofstream out;
 	out.open(filename, std::ofstream::out | std::ofstream::trunc);
 	out.close();
-}
-
-void deserializer(std::vector<Question> vector,const std::string &filename ){
-	std::ofstream out(filename);
-	std::for_each(vector.begin(), vector.end(), [&out](Question q) {
-		out << q;
-	});
-	out.close();
-}
-
-void print_report(const std::vector<Question> vector) {
-	int i = 1;
-	std::for_each(vector.begin(), vector.end(), [&i](Question q) {
-		std::cout << "Question " << i << ": "<< q.getQuestion() << std::endl;
-		++i;
-	});
 }

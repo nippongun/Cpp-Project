@@ -13,6 +13,11 @@ public:
 	std::string getQuestion() { return question; };
 	int getAnswer() { return answer; };
 	void input();
+
+	std::string getAlternative1() { return alternative1; };
+	std::string getAlternative2() { return alternative2; };
+	std::string getAlternative3() { return alternative3; };
+	std::string getAlternative4() { return alternative4; };
 private:
 	std::string question;
 	std::string alternative1;

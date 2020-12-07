@@ -11,6 +11,7 @@ public:
 	void serialize(const std::string& filename);
 	int deserialize(const std::string& filename);
 	void print_report();
+	int play_game(int amount);
 private:
 	std::vector<Question> quiz_list;
 };
